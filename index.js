@@ -11,9 +11,9 @@ module.exports = async function (context, req) {
         const container = database.container("personas");
 
         try {
-            // Use the `.items.query` method to retrieve all items with the given PersonID
+            // Use the `.items.query` method to retrieve all items with the given PersonID where ExitDate is greater than current date
             const { resources: items } = await container.items
-                .query(`SELECT * FROM c WHERE c.PersonID = '${req.query.PersonID}'`)
+                .query(`SELECT c.Department FROM c WHERE c.PersonID = '${req.query.PersonID}' and c.ExitDate >= '${new Date().toISOString()}'`)
                 .fetchAll();
 
             context.log(items.length);
